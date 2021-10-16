@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OperationPageConfigBackflowAm2Mapper">
+
+    <resultMap type="OperationPageConfigBackflowAm2" id="OperationPageConfigBackflowAm2Result">
+        <result property="id"    column="id"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="configId"    column="config_id"    />
+        <result property="deposit"    column="deposit"    />
+        <result property="lastTransferAccount"    column="last_transfer_account"    />
+        <result property="bonus"    column="bonus"    />
+        <result property="stxx"    column="stxx"    />
+    </resultMap>
+
+    <sql id="selectOperationPageConfigBackflowAm2Vo">
+        select id, activity_id, config_id, deposit, last_transfer_account, bonus, stxx from operation_page_config_backflow_am2
+    </sql>
+
+    <select id="selectOperationPageConfigBackflowAm2List" parameterType="OperationPageConfigBackflowAm2" resultMap="OperationPageConfigBackflowAm2Result">
+        <include refid="selectOperationPageConfigBackflowAm2Vo"/>
+        <where>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="configId != null "> and config_id = #{configId}</if>
+            <if test="deposit != null "> and deposit = #{deposit}</if>
+            <if test="lastTransferAccount != null "> and last_transfer_account = #{lastTransferAccount}</if>
+            <if test="bonus != null "> and bonus = #{bonus}</if>
+            <if test="stxx != null "> and stxx = #{stxx}</if>
+        </where>
+    </select>
+
+    <select id="selectOperationPageConfigBackflowAm2ById" parameterType="Long" resultMap="OperationPageConfigBackflowAm2Result">
+        <include refid="selectOperationPageConfigBackflowAm2Vo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOperationPageConfigBackflowAm2" parameterType="OperationPageConfigBackflowAm2" useGeneratedKeys="true" keyProperty="id">
+        insert into operation_page_config_backflow_am2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">activity_id,</if>
+            <if test="configId != null">config_id,</if>
+            <if test="deposit != null">deposit,</if>
+            <if test="lastTransferAccount != null">last_transfer_account,</if>
+            <if test="bonus != null">bonus,</if>
+            <if test="stxx != null">stxx,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">#{activityId},</if>
+            <if test="configId != null">#{configId},</if>
+            <if test="deposit != null">#{deposit},</if>
+            <if test="lastTransferAccount != null">#{lastTransferAccount},</if>
+            <if test="bonus != null">#{bonus},</if>
+            <if test="stxx != null">#{stxx},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOperationPageConfigBackflowAm2" parameterType="OperationPageConfigBackflowAm2">
+        update operation_page_config_backflow_am2
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="deposit != null">deposit = #{deposit},</if>
+            <if test="lastTransferAccount != null">last_transfer_account = #{lastTransferAccount},</if>
+            <if test="bonus != null">bonus = #{bonus},</if>
+            <if test="stxx != null">stxx = #{stxx},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOperationPageConfigBackflowAm2ById" parameterType="Long">
+        delete from operation_page_config_backflow_am2 where id = #{id}
+    </delete>
+
+    <delete id="deleteOperationPageConfigBackflowAm2ByIds" parameterType="String">
+        delete from operation_page_config_backflow_am2 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OperationPageConfigBackflowMapper">
+
+    <resultMap type="OperationPageConfigBackflow" id="OperationPageConfigBackflowBaseResult">
+        <result property="id"    column="id"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="configId"    column="config_id"    />
+        <result property="awardMode"    column="award_mode"    />
+        <result property="activityStartTime"    column="activity_start_time"    />
+        <result property="activityEndTime"    column="activity_end_time"    />
+        <result property="vipGrade"    column="vip_grade"    />
+        <result property="isBindPhNum"    column="is_bind_ph_num"    />
+        <result property="isBindBankCard"    column="is_bind_bank_card"    />
+        <result property="activityObjType"    column="activity_obj_type"    />
+        <result property="whiteListId"    column="white_list_id"    />
+        <result property="whiteListName"    column="white_list_name"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedAt"    column="updated_at"    />
+        <result property="stxx"    column="stxx"    />
+    </resultMap>
+
+    <sql id="selectOperationPageConfigBackflowBaseVo">
+        select id, activity_id, config_id, award_mode, activity_start_time, activity_end_time, vip_grade, is_bind_ph_num, is_bind_bank_card, activity_obj_type, white_list_id, white_list_name, created_by, created_at, updated_by, updated_at, stxx from operation_page_config_backflow_base
+    </sql>
+
+    <select id="selectOperationPageConfigBackflowBaseList" parameterType="OperationPageConfigBackflow" resultMap="OperationPageConfigBackflowBaseResult">
+        <include refid="selectOperationPageConfigBackflowBaseVo"/>
+        <where>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="configId != null "> and config_id = #{configId}</if>
+            <if test="awardMode != null "> and award_mode = #{awardMode}</if>
+            <if test="activityStartTime != null "> and activity_start_time = #{activityStartTime}</if>
+            <if test="activityEndTime != null "> and activity_end_time = #{activityEndTime}</if>
+            <if test="vipGrade != null  and vipGrade != ''"> and vip_grade = #{vipGrade}</if>
+            <if test="isBindPhNum != null "> and is_bind_ph_num = #{isBindPhNum}</if>
+            <if test="isBindBankCard != null "> and is_bind_bank_card = #{isBindBankCard}</if>
+            <if test="activityObjType != null "> and activity_obj_type = #{activityObjType}</if>
+            <if test="whiteListId != null "> and white_list_id = #{whiteListId}</if>
+            <if test="whiteListName != null  and whiteListName != ''"> and white_list_name like concat('%', #{whiteListName}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+            <if test="stxx != null "> and stxx = #{stxx}</if>
+        </where>
+    </select>
+
+    <select id="selectOperationPageConfigBackflowBaseById" parameterType="Long" resultMap="OperationPageConfigBackflowBaseResult">
+        <include refid="selectOperationPageConfigBackflowBaseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOperationPageConfigBackflowBase" parameterType="OperationPageConfigBackflow" useGeneratedKeys="true" keyProperty="id">
+        insert into operation_page_config_backflow_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">activity_id,</if>
+            <if test="configId != null">config_id,</if>
+            <if test="awardMode != null">award_mode,</if>
+            <if test="activityStartTime != null">activity_start_time,</if>
+            <if test="activityEndTime != null">activity_end_time,</if>
+            <if test="vipGrade != null and vipGrade != ''">vip_grade,</if>
+            <if test="isBindPhNum != null">is_bind_ph_num,</if>
+            <if test="isBindBankCard != null">is_bind_bank_card,</if>
+            <if test="activityObjType != null">activity_obj_type,</if>
+            <if test="whiteListId != null">white_list_id,</if>
+            <if test="whiteListName != null and whiteListName != ''">white_list_name,</if>
+            <if test="createdBy != null and createdBy != ''">created_by,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedBy != null and updatedBy != ''">updated_by,</if>
+            <if test="updatedAt != null">updated_at,</if>
+            <if test="stxx != null">stxx,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">#{activityId},</if>
+            <if test="configId != null">#{configId},</if>
+            <if test="awardMode != null">#{awardMode},</if>
+            <if test="activityStartTime != null">#{activityStartTime},</if>
+            <if test="activityEndTime != null">#{activityEndTime},</if>
+            <if test="vipGrade != null and vipGrade != ''">#{vipGrade},</if>
+            <if test="isBindPhNum != null">#{isBindPhNum},</if>
+            <if test="isBindBankCard != null">#{isBindBankCard},</if>
+            <if test="activityObjType != null">#{activityObjType},</if>
+            <if test="whiteListId != null">#{whiteListId},</if>
+            <if test="whiteListName != null and whiteListName != ''">#{whiteListName},</if>
+            <if test="createdBy != null and createdBy != ''">#{createdBy},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedBy != null and updatedBy != ''">#{updatedBy},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+            <if test="stxx != null">#{stxx},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOperationPageConfigBackflowBase" parameterType="OperationPageConfigBackflow">
+        update operation_page_config_backflow_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="awardMode != null">award_mode = #{awardMode},</if>
+            <if test="activityStartTime != null">activity_start_time = #{activityStartTime},</if>
+            <if test="activityEndTime != null">activity_end_time = #{activityEndTime},</if>
+            <if test="vipGrade != null and vipGrade != ''">vip_grade = #{vipGrade},</if>
+            <if test="isBindPhNum != null">is_bind_ph_num = #{isBindPhNum},</if>
+            <if test="isBindBankCard != null">is_bind_bank_card = #{isBindBankCard},</if>
+            <if test="activityObjType != null">activity_obj_type = #{activityObjType},</if>
+            <if test="whiteListId != null">white_list_id = #{whiteListId},</if>
+            <if test="whiteListName != null and whiteListName != ''">white_list_name = #{whiteListName},</if>
+            <if test="createdBy != null and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedBy != null and updatedBy != ''">updated_by = #{updatedBy},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+            <if test="stxx != null">stxx = #{stxx},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOperationPageConfigBackflowBaseById" parameterType="Long">
+        delete from operation_page_config_backflow_base where id = #{id}
+    </delete>
+
+    <delete id="deleteOperationPageConfigBackflowBaseByIds" parameterType="String">
+        delete from operation_page_config_backflow_base where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

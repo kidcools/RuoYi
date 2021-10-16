@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OperationPageConfigBackflowDetailMapper">
+
+    <resultMap type="OperationPageConfigBackflowDetail" id="OperationPageConfigBackflowDetailResult">
+        <result property="id"    column="id"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="configId"    column="config_id"    />
+        <result property="awardMode"    column="award_mode"    />
+        <result property="deposit"    column="deposit"    />
+        <result property="bonusWallet"    column="bonus_wallet"    />
+        <result property="auditMode"    column="audit_mode"    />
+        <result property="flowMultiple"    column="flow_multiple"    />
+        <result property="isSpecialDiscounts"    column="is_special_discounts"    />
+        <result property="isAlikeIp"    column="is_alike_ip"    />
+        <result property="isAlikeDevice"    column="is_alike_device"    />
+        <result property="gameVenueId"    column="game_venue_id"    />
+        <result property="isBackwaterShare"    column="is_backwater_share"    />
+        <result property="minDepositDay"    column="min_deposit_day"    />
+        <result property="maxDayNum"    column="max_day_num"    />
+        <result property="bonusUpperLimit"    column="bonus_upper_limit"    />
+        <result property="inviteObjType"    column="invite_obj_type"    />
+        <result property="inviteWhiteListId"    column="invite_white_list_id"    />
+        <result property="inviteWhiteListName"    column="invite_white_list_name"    />
+        <result property="inviteTag"    column="invite_tag"    />
+        <result property="appH5RecallQrcode"    column="app_h5_recall_qrcode"    />
+        <result property="ceaselessDeposit"    column="ceaseless_deposit"    />
+        <result property="stxx"    column="stxx"    />
+    </resultMap>
+
+    <sql id="selectOperationPageConfigBackflowDetailVo">
+        select id, activity_id, config_id, award_mode, deposit, bonus_wallet, audit_mode, flow_multiple, is_special_discounts, is_alike_ip, is_alike_device, game_venue_id, is_backwater_share, min_deposit_day, max_day_num, bonus_upper_limit, invite_obj_type, invite_white_list_id, invite_white_list_name, invite_tag, app_h5_recall_qrcode, ceaseless_deposit, stxx from operation_page_config_backflow_detail
+    </sql>
+
+    <select id="selectOperationPageConfigBackflowDetailList" parameterType="OperationPageConfigBackflowDetail" resultMap="OperationPageConfigBackflowDetailResult">
+        <include refid="selectOperationPageConfigBackflowDetailVo"/>
+        <where>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="configId != null "> and config_id = #{configId}</if>
+            <if test="awardMode != null "> and award_mode = #{awardMode}</if>
+            <if test="deposit != null "> and deposit = #{deposit}</if>
+            <if test="bonusWallet != null "> and bonus_wallet = #{bonusWallet}</if>
+            <if test="auditMode != null "> and audit_mode = #{auditMode}</if>
+            <if test="flowMultiple != null "> and flow_multiple = #{flowMultiple}</if>
+            <if test="isSpecialDiscounts != null "> and is_special_discounts = #{isSpecialDiscounts}</if>
+            <if test="isAlikeIp != null "> and is_alike_ip = #{isAlikeIp}</if>
+            <if test="isAlikeDevice != null "> and is_alike_device = #{isAlikeDevice}</if>
+            <if test="gameVenueId != null  and gameVenueId != ''"> and game_venue_id = #{gameVenueId}</if>
+            <if test="isBackwaterShare != null "> and is_backwater_share = #{isBackwaterShare}</if>
+            <if test="minDepositDay != null "> and min_deposit_day = #{minDepositDay}</if>
+            <if test="maxDayNum != null "> and max_day_num = #{maxDayNum}</if>
+            <if test="bonusUpperLimit != null "> and bonus_upper_limit = #{bonusUpperLimit}</if>
+            <if test="inviteObjType != null "> and invite_obj_type = #{inviteObjType}</if>
+            <if test="inviteWhiteListId != null "> and invite_white_list_id = #{inviteWhiteListId}</if>
+            <if test="inviteWhiteListName != null  and inviteWhiteListName != ''"> and invite_white_list_name like concat('%', #{inviteWhiteListName}, '%')</if>
+            <if test="inviteTag != null "> and invite_tag = #{inviteTag}</if>
+            <if test="appH5RecallQrcode != null  and appH5RecallQrcode != ''"> and app_h5_recall_qrcode = #{appH5RecallQrcode}</if>
+            <if test="ceaselessDeposit != null  and ceaselessDeposit != ''"> and ceaseless_deposit = #{ceaselessDeposit}</if>
+            <if test="stxx != null "> and stxx = #{stxx}</if>
+        </where>
+    </select>
+
+    <select id="selectOperationPageConfigBackflowDetailById" parameterType="Long" resultMap="OperationPageConfigBackflowDetailResult">
+        <include refid="selectOperationPageConfigBackflowDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOperationPageConfigBackflowDetail" parameterType="OperationPageConfigBackflowDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into operation_page_config_backflow_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">activity_id,</if>
+            <if test="configId != null">config_id,</if>
+            <if test="awardMode != null">award_mode,</if>
+            <if test="deposit != null">deposit,</if>
+            <if test="bonusWallet != null">bonus_wallet,</if>
+            <if test="auditMode != null">audit_mode,</if>
+            <if test="flowMultiple != null">flow_multiple,</if>
+            <if test="isSpecialDiscounts != null">is_special_discounts,</if>
+            <if test="isAlikeIp != null">is_alike_ip,</if>
+            <if test="isAlikeDevice != null">is_alike_device,</if>
+            <if test="gameVenueId != null and gameVenueId != ''">game_venue_id,</if>
+            <if test="isBackwaterShare != null">is_backwater_share,</if>
+            <if test="minDepositDay != null">min_deposit_day,</if>
+            <if test="maxDayNum != null">max_day_num,</if>
+            <if test="bonusUpperLimit != null">bonus_upper_limit,</if>
+            <if test="inviteObjType != null">invite_obj_type,</if>
+            <if test="inviteWhiteListId != null">invite_white_list_id,</if>
+            <if test="inviteWhiteListName != null and inviteWhiteListName != ''">invite_white_list_name,</if>
+            <if test="inviteTag != null">invite_tag,</if>
+            <if test="appH5RecallQrcode != null and appH5RecallQrcode != ''">app_h5_recall_qrcode,</if>
+            <if test="ceaselessDeposit != null and ceaselessDeposit != ''">ceaseless_deposit,</if>
+            <if test="stxx != null">stxx,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">#{activityId},</if>
+            <if test="configId != null">#{configId},</if>
+            <if test="awardMode != null">#{awardMode},</if>
+            <if test="deposit != null">#{deposit},</if>
+            <if test="bonusWallet != null">#{bonusWallet},</if>
+            <if test="auditMode != null">#{auditMode},</if>
+            <if test="flowMultiple != null">#{flowMultiple},</if>
+            <if test="isSpecialDiscounts != null">#{isSpecialDiscounts},</if>
+            <if test="isAlikeIp != null">#{isAlikeIp},</if>
+            <if test="isAlikeDevice != null">#{isAlikeDevice},</if>
+            <if test="gameVenueId != null and gameVenueId != ''">#{gameVenueId},</if>
+            <if test="isBackwaterShare != null">#{isBackwaterShare},</if>
+            <if test="minDepositDay != null">#{minDepositDay},</if>
+            <if test="maxDayNum != null">#{maxDayNum},</if>
+            <if test="bonusUpperLimit != null">#{bonusUpperLimit},</if>
+            <if test="inviteObjType != null">#{inviteObjType},</if>
+            <if test="inviteWhiteListId != null">#{inviteWhiteListId},</if>
+            <if test="inviteWhiteListName != null and inviteWhiteListName != ''">#{inviteWhiteListName},</if>
+            <if test="inviteTag != null">#{inviteTag},</if>
+            <if test="appH5RecallQrcode != null and appH5RecallQrcode != ''">#{appH5RecallQrcode},</if>
+            <if test="ceaselessDeposit != null and ceaselessDeposit != ''">#{ceaselessDeposit},</if>
+            <if test="stxx != null">#{stxx},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOperationPageConfigBackflowDetail" parameterType="OperationPageConfigBackflowDetail">
+        update operation_page_config_backflow_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="awardMode != null">award_mode = #{awardMode},</if>
+            <if test="deposit != null">deposit = #{deposit},</if>
+            <if test="bonusWallet != null">bonus_wallet = #{bonusWallet},</if>
+            <if test="auditMode != null">audit_mode = #{auditMode},</if>
+            <if test="flowMultiple != null">flow_multiple = #{flowMultiple},</if>
+            <if test="isSpecialDiscounts != null">is_special_discounts = #{isSpecialDiscounts},</if>
+            <if test="isAlikeIp != null">is_alike_ip = #{isAlikeIp},</if>
+            <if test="isAlikeDevice != null">is_alike_device = #{isAlikeDevice},</if>
+            <if test="gameVenueId != null and gameVenueId != ''">game_venue_id = #{gameVenueId},</if>
+            <if test="isBackwaterShare != null">is_backwater_share = #{isBackwaterShare},</if>
+            <if test="minDepositDay != null">min_deposit_day = #{minDepositDay},</if>
+            <if test="maxDayNum != null">max_day_num = #{maxDayNum},</if>
+            <if test="bonusUpperLimit != null">bonus_upper_limit = #{bonusUpperLimit},</if>
+            <if test="inviteObjType != null">invite_obj_type = #{inviteObjType},</if>
+            <if test="inviteWhiteListId != null">invite_white_list_id = #{inviteWhiteListId},</if>
+            <if test="inviteWhiteListName != null and inviteWhiteListName != ''">invite_white_list_name = #{inviteWhiteListName},</if>
+            <if test="inviteTag != null">invite_tag = #{inviteTag},</if>
+            <if test="appH5RecallQrcode != null and appH5RecallQrcode != ''">app_h5_recall_qrcode = #{appH5RecallQrcode},</if>
+            <if test="ceaselessDeposit != null and ceaselessDeposit != ''">ceaseless_deposit = #{ceaselessDeposit},</if>
+            <if test="stxx != null">stxx = #{stxx},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOperationPageConfigBackflowDetailById" parameterType="Long">
+        delete from operation_page_config_backflow_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteOperationPageConfigBackflowDetailByIds" parameterType="String">
+        delete from operation_page_config_backflow_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

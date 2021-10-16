@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OperationPageConfigBackflowAm4Mapper">
+
+    <resultMap type="OperationPageConfigBackflowAm4" id="OperationPageConfigBackflowAm4Result">
+        <result property="id"    column="id"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="configId"    column="config_id"    />
+        <result property="peopleNum"    column="people_num"    />
+        <result property="awardMoney"    column="award_money"    />
+        <result property="stxx"    column="stxx"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
+
+    <sql id="selectOperationPageConfigBackflowAm4Vo">
+        select id, activity_id, config_id, people_num, award_money, stxx, sort from operation_page_config_backflow_am4
+    </sql>
+
+    <select id="selectOperationPageConfigBackflowAm4List" parameterType="OperationPageConfigBackflowAm4" resultMap="OperationPageConfigBackflowAm4Result">
+        <include refid="selectOperationPageConfigBackflowAm4Vo"/>
+        <where>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="configId != null "> and config_id = #{configId}</if>
+            <if test="peopleNum != null "> and people_num = #{peopleNum}</if>
+            <if test="awardMoney != null "> and award_money = #{awardMoney}</if>
+            <if test="stxx != null "> and stxx = #{stxx}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+
+    <select id="selectOperationPageConfigBackflowAm4ById" parameterType="Long" resultMap="OperationPageConfigBackflowAm4Result">
+        <include refid="selectOperationPageConfigBackflowAm4Vo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOperationPageConfigBackflowAm4" parameterType="OperationPageConfigBackflowAm4" useGeneratedKeys="true" keyProperty="id">
+        insert into operation_page_config_backflow_am4
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">activity_id,</if>
+            <if test="configId != null">config_id,</if>
+            <if test="peopleNum != null">people_num,</if>
+            <if test="awardMoney != null">award_money,</if>
+            <if test="stxx != null">stxx,</if>
+            <if test="sort != null">sort,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activityId != null">#{activityId},</if>
+            <if test="configId != null">#{configId},</if>
+            <if test="peopleNum != null">#{peopleNum},</if>
+            <if test="awardMoney != null">#{awardMoney},</if>
+            <if test="stxx != null">#{stxx},</if>
+            <if test="sort != null">#{sort},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOperationPageConfigBackflowAm4" parameterType="OperationPageConfigBackflowAm4">
+        update operation_page_config_backflow_am4
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="peopleNum != null">people_num = #{peopleNum},</if>
+            <if test="awardMoney != null">award_money = #{awardMoney},</if>
+            <if test="stxx != null">stxx = #{stxx},</if>
+            <if test="sort != null">sort = #{sort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOperationPageConfigBackflowAm4ById" parameterType="Long">
+        delete from operation_page_config_backflow_am4 where id = #{id}
+    </delete>
+
+    <delete id="deleteOperationPageConfigBackflowAm4ByIds" parameterType="String">
+        delete from operation_page_config_backflow_am4 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

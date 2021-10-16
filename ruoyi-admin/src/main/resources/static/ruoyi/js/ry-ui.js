@@ -1180,6 +1180,8 @@ var table = {
                         $.modal.disable();
                     },
                     success: function(result) {
+
+
                         if (typeof callback == "function") {
                             callback(result);
                         }

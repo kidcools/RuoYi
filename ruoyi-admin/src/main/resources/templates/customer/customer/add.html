@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增客户账号管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-customer-add">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">客户信息</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">客户姓名：</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" class="form-control" placeholder="请输入文本">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">对接商务：</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="opposite">
+                            <option th:each="opposite,oppositeStat:${opposites}" th:value="${opposite.businessId}" th:text="${opposite.businessName}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">账号信息：</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">默认账号：</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static">（系统默认生成，确认创建后生效）</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">默认密码：</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static">（系统默认生成，确认创建后生效）</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "customer/customer"
+        $("#form-customer-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-customer-add').serialize(),popup);
+
+            }
+        }
+
+        $("input[name='expireTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+        function popup(result){
+            // 设置回调函数
+
+                $.modal.confirm("点击确认复制用户名密码到剪切板", function(result) {
+                });
+
+        }
+    </script>
+</body>
+</html>
