@@ -1,5 +1,7 @@
 package com.ruoyi.system.controller;
 
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.system.domain.OperationPageConfigBackflow;
 import com.ruoyi.system.domain.OperationPageConfigBackflowAm1;
@@ -9,10 +11,12 @@ import com.ruoyi.system.mapper.OperationPageConfigBackflowDetailMapper;
 import com.ruoyi.system.mapper.OperationPageConfigBackflowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.FileInputStream;
 import java.util.List;
 
 @Slf4j
@@ -45,7 +49,34 @@ public class OperationPageConfigBackflowDetailController {
             List<OperationPageConfigBackflowAm1> am1s = operationPageConfigBackflowAmMapper.selectOperationPageConfigBackflowAm1List(am1);
             //封装无条件奖励模式配置信息
             result2.setOperationPageConfigBackflowAm1s(am1s);
+        }else{
+
         }
         return result2;
+    }
+
+    @GetMapping("/enc/{value}")
+    public String enc(@PathVariable("value") String value){
+        return "";
+    }
+
+    @GetMapping("/csv")
+    public String csv(){
+        try {
+            FileInputStream fileInputStream = new FileInputStream("D://test.xlsx");
+            ExcelReader reader = ExcelUtil.getReader(fileInputStream);
+            List<List<Object>> rows = reader.read();
+            String info = (String)rows.get(0).get(0);
+            if(info.equals("订单号")){
+                log.info(info);
+                rows.forEach(row->{
+                    log.info(row.get(0).toString());
+                });
+            }
+
+            return info;
+        }catch(Exception e){
+        }
+        return "";
     }
 }
