@@ -22,6 +22,10 @@ public class PornHubController {
     public @ResponseBody  Response getPhVideoUrl(@RequestParam("url") String url){
         return ResponseUtils.successRes(phSpiderService.getVideoUrl(url),"查询成功");
     }
+    @GetMapping("/phvideo2")
+    public @ResponseBody  Response getPhVideoUrl2(@RequestParam("url") String url){
+        return ResponseUtils.successRes(phSpiderService.getVideoUrlV2(url),"查询成功");
+    }
     @PostMapping("/download")
     public @ResponseBody  Response download( @RequestBody UrlDto url){
         log.info("url:{}" ,url.getUrl());
