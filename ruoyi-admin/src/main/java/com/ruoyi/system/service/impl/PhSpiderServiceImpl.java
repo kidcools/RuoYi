@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ruoyi.system.domain.VideoInfo;
 import com.ruoyi.system.service.PhSpiderService;
 import com.ruoyi.system.utils.DriverUtil;
+import com.ruoyi.system.utils.IPUtils2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Connection;
@@ -14,7 +15,6 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -67,6 +67,24 @@ public class PhSpiderServiceImpl implements PhSpiderService {
      */
     @Override
     public String getVideoUrlV2(String url) {
+        return getVideoUrlFromph(url);
+    }
+
+    @Override
+    public String getVideoUrlV3(String url) {
+        String videoUrlFromph = "";
+        int i = 1;
+        while(!(videoUrlFromph.contains("ip=")&&videoUrlFromph.contains("ipa="))) {
+            long start = System.currentTimeMillis();
+            String randomIp = IPUtils2.getRandomIp();
+            videoUrlFromph = getVideoUrlFromph(url, randomIp);
+            long end = System.currentTimeMillis();
+            log.info("已爬取{}次,上次耗时{}秒", i, (end - start) / 1000);
+            i++;
+        }
+        return null;
+    }
+    private String getVideoUrlFromph(String url){
         //获得网站源码
         Document parse = null;
         Map<String, String> cookies = null;
@@ -125,8 +143,121 @@ public class PhSpiderServiceImpl implements PhSpiderService {
         }
         return null;
     }
+    private String getVideoUrlFromph(String url,String ip){
+        //获得网站源码
+        Document parse = null;
+        Map<String, String> cookies = null;
+        try {
+            Connection.Response execute = Jsoup.connect(url).header("x-forwarded-for",ip).execute();
+            cookies = execute.cookies();
+            parse = execute.parse();
+            //parse = Jsoup.connect(url).get();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String videoId = parse.getElementById("player").attr("data-video-id");
+        String flashVar = "flashvars_"+videoId;
+        Elements scripts = parse.getElementsByTag("script");
+        Element targetEle = null;
+        for (Element ele:scripts) {
+            if(ele.html().contains("flashvars_")){
+                targetEle = ele;
+                break;
+            }
+        }
+        if(targetEle!=null){
+            String html = targetEle.html();
+            html = html.substring(0,html.lastIndexOf("playerObjList")).replace("playerObjList","");
+            log.info(html);
+            //获得对应的js代码
+            /*WebDriver driver = DriverUtil.getDriver();
+            JavascriptExecutor js = (JavascriptExecutor) driver;*/
+            String jsStr = "for(i=0;i<"+flashVar+".mediaDefinitions.length;i++){if("+flashVar+".mediaDefinitions[i].format==='mp4'){return "+flashVar+".mediaDefinitions[i].videoUrl}}";
+            String jsStr2 = "function say(){for(i=0;i<"+flashVar+".mediaDefinitions.length;i++){if("+flashVar+".mediaDefinitions[i].format==='mp4'){return "+flashVar+".mediaDefinitions[i].videoUrl}}}";
+            html+=jsStr2;
+            String mediaurl = null;
+            try {
+                mediaurl = (String) js.eval(html);
+                Invocable js1 = (Invocable) js;
+                mediaurl=(String)js1.invokeFunction("say",null);
+            } catch (ScriptException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            try {
+                Document doc  = Jsoup.connect(mediaurl).cookies(cookies).header("x-forwarded-for",ip).ignoreContentType(true).get();
+                log.info("请求IP:{}",ip);
+                String videoinfo  = doc.getElementsByTag("body").get(0).html();
+                List<VideoInfo> videoInfos = JSON.parseArray(videoinfo, VideoInfo.class);
+                videoInfos = videoInfos.stream().filter(item -> {
+                    return StringUtils.isNotBlank(item.getVideoUrl());
+                }).collect(Collectors.toList());
+                log.info("获得URL:{}",videoInfos.get(videoInfos.size()-1).getVideoUrl().replaceAll("&amp;","&"));
+                return videoInfos.get(videoInfos.size()-1).getVideoUrl().replaceAll("&amp;","&");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    private String getVideoUrlFromph(String url,String ip,String proxyHost,Integer port){
+        //获得网站源码
+        Document parse = null;
+        Map<String, String> cookies = null;
+        try {
+            Connection.Response execute = Jsoup.connect(url).header("x-forwarded-for",ip).execute();
+            cookies = execute.cookies();
+            parse = execute.parse();
+            //parse = Jsoup.connect(url).get();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String videoId = parse.getElementById("player").attr("data-video-id");
+        String flashVar = "flashvars_"+videoId;
+        Elements scripts = parse.getElementsByTag("script");
+        Element targetEle = null;
+        for (Element ele:scripts) {
+            if(ele.html().contains("flashvars_")){
+                targetEle = ele;
+                break;
+            }
+        }
+        if(targetEle!=null){
+            String html = targetEle.html();
+            html = html.substring(0,html.lastIndexOf("playerObjList")).replace("playerObjList","");
+            log.info(html);
+            //获得对应的js代码
+            /*WebDriver driver = DriverUtil.getDriver();
+            JavascriptExecutor js = (JavascriptExecutor) driver;*/
+            String jsStr = "for(i=0;i<"+flashVar+".mediaDefinitions.length;i++){if("+flashVar+".mediaDefinitions[i].format==='mp4'){return "+flashVar+".mediaDefinitions[i].videoUrl}}";
+            String jsStr2 = "function say(){for(i=0;i<"+flashVar+".mediaDefinitions.length;i++){if("+flashVar+".mediaDefinitions[i].format==='mp4'){return "+flashVar+".mediaDefinitions[i].videoUrl}}}";
+            html+=jsStr2;
+            String mediaurl = null;
+            try {
+                mediaurl = (String) js.eval(html);
+                Invocable js1 = (Invocable) js;
+                mediaurl=(String)js1.invokeFunction("say",null);
+                log.info("mediaUrl:{}",mediaurl);
+            } catch (ScriptException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            try {
+                Document doc  = Jsoup.connect(mediaurl).cookies(cookies).header("x-forwarded-for",ip).proxy(proxyHost,port).ignoreContentType(true).get();
+                log.info("请求IP:{},proxy:{},port:{}",ip,proxyHost,port);
+                String videoinfo  = doc.getElementsByTag("body").get(0).html();
+                List<VideoInfo> videoInfos = JSON.parseArray(videoinfo, VideoInfo.class);
+                videoInfos = videoInfos.stream().filter(item -> {
+                    return StringUtils.isNotBlank(item.getVideoUrl());
+                }).collect(Collectors.toList());
+                log.info("获得URL:{}",videoInfos.get(videoInfos.size()-1).getVideoUrl().replaceAll("&amp;","&"));
+                return videoInfos.get(videoInfos.size()-1).getVideoUrl().replaceAll("&amp;","&");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     @Override
     public String download(String httpUrl) {
         // 1.下载网络文件
@@ -161,5 +292,11 @@ public class PhSpiderServiceImpl implements PhSpiderService {
             e.printStackTrace();
             return "fail";
         }
+    }
+
+    @Override
+    public String getVideoUrlV4(String url, String proxy, Integer host) {
+        String videoUrlFromph = getVideoUrlFromph( url, IPUtils2.getRandomIp(), proxy, host);
+        return videoUrlFromph;
     }
 }
