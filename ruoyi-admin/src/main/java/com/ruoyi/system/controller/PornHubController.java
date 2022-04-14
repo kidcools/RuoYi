@@ -40,4 +40,9 @@ public class PornHubController {
         log.info("url:{}" ,url.getUrl());
         return ResponseUtils.successRes(phSpiderService.download(url.getUrl()),"下载成功");
     }
+    @PostMapping("/downloadImg")
+    public @ResponseBody  Response downloadImg( @RequestBody UrlDto url){
+        log.info("url:{}" ,url.getUrl());
+        return ResponseUtils.successRes(phSpiderService.downloadImg(url.getUrl(),url.getEndFix()),"下载成功");
+    }
 }

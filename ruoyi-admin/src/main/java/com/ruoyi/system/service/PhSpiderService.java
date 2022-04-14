@@ -11,6 +11,8 @@ public interface PhSpiderService {
      */
     String getVideoUrlV3(String url);
     String download(String url);
-
     String getVideoUrlV4(String url,String proxy,Integer host);
+    String downloadImg(String url,String endFix);
+    String downloadImg2(String url,String endFix);
+
 }

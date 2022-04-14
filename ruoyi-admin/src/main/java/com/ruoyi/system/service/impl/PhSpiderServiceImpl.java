@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,7 +68,23 @@ public class PhSpiderServiceImpl implements PhSpiderService {
      */
     @Override
     public String getVideoUrlV2(String url) {
-        return getVideoUrlFromph(url);
+        String videoUrl = null;
+         try{videoUrl = getVideoUrlFromph(url);}catch (Exception e){
+             try {
+                 videoUrl = getVideoUrlFromph(url);
+             }catch (Exception e1){
+                 try {
+                     videoUrl = getVideoUrlFromph(url);
+                 }catch (Exception e2){
+                     try {
+                         videoUrl = getVideoUrlFromph(url);
+                     }catch (Exception e3){
+                         e3.printStackTrace();
+                     }
+                 }
+             }
+         }
+         return videoUrl;
     }
 
     @Override
@@ -89,7 +106,7 @@ public class PhSpiderServiceImpl implements PhSpiderService {
         Document parse = null;
         Map<String, String> cookies = null;
         try {
-            Connection.Response execute = Jsoup.connect(url).execute();
+            Connection.Response execute = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36").execute();
             cookies = execute.cookies();
             parse = execute.parse();
             //parse = Jsoup.connect(url).get();
@@ -127,7 +144,7 @@ public class PhSpiderServiceImpl implements PhSpiderService {
                 e.printStackTrace();
             }
             try {
-                Document doc  = Jsoup.connect(mediaurl).cookies(cookies).ignoreContentType(true).get();
+                Document doc  = Jsoup.connect(mediaurl).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36").cookies(cookies).ignoreContentType(true).get();
                 log.info(doc.html());
                 String videoinfo  = doc.getElementsByTag("body").get(0).html();
                 List<VideoInfo> videoInfos = JSON.parseArray(videoinfo, VideoInfo.class);
@@ -294,9 +311,55 @@ public class PhSpiderServiceImpl implements PhSpiderService {
         }
     }
 
+
     @Override
     public String getVideoUrlV4(String url, String proxy, Integer host) {
         String videoUrlFromph = getVideoUrlFromph( url, IPUtils2.getRandomIp(), proxy, host);
         return videoUrlFromph;
+    }
+
+    /**
+     * 下载所有图片
+     * @param httpUrl
+     * @return
+     */
+    @Override
+    public String downloadImg(String httpUrl,String endFix) {
+        // 1.下载网络文件
+        int byteRead;
+        URL url;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            return "success";
+        }
+
+        try {
+            //2.获取链接
+            URLConnection conn = url.openConnection();
+            //3.输入流
+            InputStream inStream = conn.getInputStream();
+            //3.写入文件
+            FileOutputStream fs = new FileOutputStream("F:\\test."+endFix);
+
+            byte[] buffer = new byte[1024];
+            while ((byteRead = inStream.read(buffer)) != -1) {
+                fs.write(buffer, 0, byteRead);
+            }
+            inStream.close();
+            fs.close();
+            return "success";
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return "fail";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+    @Override
+    public String downloadImg2(String httpUrl,String endFix) {
+       return "";
     }
 }
